@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <title>Web Awesome Demo</title>
+
+    <!-- These are styles for Font Awesome icon. -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- These are styles for Web Awesome web components. -->
+    <link
+      rel="stylesheet"
+      href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/webawesome.css"
+    />
+
+    <style>
+      fieldset {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      wa-callout {
+        width: 20rem;
+      }
+    </style>
+
+    <!-- This is an autoloader for Web Awesome that watches the DOM
+         for unregistered Web Awesome elements and lazily loads them.  -->
+    <script
+      type="module"
+      src="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/webawesome.loader.js"
+    ></script>
+  </head>
+  <body>
+    <fieldset>
+      <legend>Web Awesome Demos</legend>
+
+      <div>
+        <wa-avatar label="User avatar"></wa-avatar>
+        <wa-animation name="flip" duration="2000" play>
+          <wa-avatar
+            image="./images/mark-volkmann.png"
+            label="Mark Volkmann"
+            loading="lazy"
+          ></wa-avatar>
+        </wa-animation>
+      </div>
+
+      <div>
+        <wa-button style="margin-inline-start: 1rem">
+          Errors
+          <wa-badge variant="danger" pill>6</wa-badge>
+        </wa-button>
+      </div>
+
+      <div>
+        <wa-button-group label="Alignment">
+          <wa-button size="medium" pill>Left</wa-button>
+          <wa-button size="medium" pill>Center</wa-button>
+          <wa-button size="medium" pill>Right</wa-button>
+        </wa-button-group>
+      </div>
+
+      <div>
+        <wa-icon name="circle-exclamation" style="regular"></wa-icon>
+        <wa-icon name="circle-exclamation" style="solid"></wa-icon>
+        <i class="fa-solid fa-circle-exclamation"></i>
+      </div>
+
+      <wa-callout variant="danger">
+        <wa-icon
+          slot="icon"
+          name="circle-exclamation"
+          variant="solid"
+        ></wa-icon>
+        <strong>Your account has been deleted</strong><br />
+        We're very sorry to see you go!
+      </wa-callout>
+
+      <wa-card class="card-header" style="width: 20rem">
+        <div slot="header" class="wa-split">Header Content</div>
+        This is the main content.
+        <div slot="footer" class="wa-split">Footer Content</div>
+      </wa-card>
+    </fieldset>
+  </body>
+</html>
