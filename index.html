@@ -1,89 +1,957 @@
 <html>
   <head>
     <title>Web Awesome Demo</title>
+    <!-- Without this, the degree symbol doesn't render correctly. -->
+    <meta charset="UTF-8" />
 
-    <!-- These are styles for Font Awesome icon. -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-
-    <!-- These are styles for Web Awesome web components. -->
+    <!-- This loads the default Web Awesome styles. -->
     <link
       rel="stylesheet"
       href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/webawesome.css"
     />
 
     <style>
-      fieldset {
+      body {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        padding: 2rem;
       }
-
-      wa-callout {
+      #color-select {
+        width: 11rem;
+      }
+      #detonate-button + wa-tooltip {
+        --max-width: 8rem;
+        &::part(body) {
+          background-color: pink;
+          color: red;
+        }
+        &::part(base__arrow) {
+          background-color: pink;
+        }
+      }
+      h2 {
+        margin-bottom: 0;
+      }
+      #my-divider {
+        --color: red;
+        --spacing: 3rem;
+        --width: 0.25rem;
+      }
+      #my-popover-content {
+        /* This centers the "Close" button. */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 17rem;
+      }
+      #my-progress-bar {
+        --indicator-color: green;
+        --track-color: lightgreen;
+        --track-height: 2rem;
         width: 20rem;
+      }
+      #my-progress-ring {
+        --indicator-color: green;
+        --indicator-width: 12px;
+        --size: 7rem;
+        --track-color: lightgreen;
+        --track-width: 6px;
+      }
+      #my-rating {
+        --symbol-color: pink;
+        --symbol-color-active: red;
+        --symbol-spacing: 0.1rem;
+      }
+      #my-split-photos {
+        --divider-width: 1rem;
+        overflow: hidden;
+
+        wa-split-panel {
+          --divider-width: 1rem;
+          height: 100%;
+          overflow: hidden;
+          width: 100%;
+        }
+
+        img {
+          border-radius: 0;
+          height: 100%;
+          object-fit: cover;
+          width: 100%;
+        }
+      }
+      #my-split-text {
+        --divider-width: 1rem;
+        --min: 8rem;
+        --max: calc(100% - 8rem);
+        border: 2px solid purple;
+
+        &::part(divider) {
+          background-color: purple;
+          color: white;
+        }
+
+        /* This doesn't work.
+        &::part(start) { ... }
+        */
+        div[slot="start"] {
+          background-color: rgba(0, 255, 0, 0.1);
+          color: green;
+          overflow: hidden;
+          padding: 1rem;
+        }
+
+        div[slot="end"] {
+          background-color: rgba(0, 0, 255, 0.1);
+          color: blue;
+          overflow: hidden;
+          padding: 1rem;
+        }
+      }
+      #my-switch {
+        --thumb-size: 20px; /* default seems too small */
+      }
+      #my-tab-group {
+        --indicator-color: red;
+        --track-color: pink;
+        --track-width: 4px;
+
+        border: 1px solid gray;
+        width: 30rem;
+
+        &::part(body) {
+          align-content: center;
+        }
+
+        > wa-tab-panel::part(base) {
+          padding: 1rem;
+        }
+      }
+      #my-textarea {
+        width: 20rem;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      #select-communication-preferences {
+        width: 27rem;
+      }
+      #size-slider {
+        /* height must be set on ::part(track). */
+        width: 3rem;
+      }
+      #size-slider::part(track) {
+        height: 6rem;
+      }
+      #temperature-slider {
+        width: 20rem;
+      }
+      #volume-slider {
+        width: 20rem;
+      }
+      wa-animated-image {
+        border: 1px solid lightgray;
+      }
+      wa-callout,
+      wa-card {
+        width: 20rem;
+      }
+      wa-carousel {
+        width: 40rem;
+      }
+      wa-details::part(summary) {
+        font-weight: bold;
+      }
+      wa-input {
+        width: 20rem;
+      }
+      /* Without this the references section will be too tall. */
+      wa-slider::part(references) {
+        height: 1rem;
+      }
+      wa-spinner {
+        --indicator-color: green;
+        --speed: 2s; /* has no effect; bug? */
+        --track-color: lightgreen;
+        --track-width: 2px; /* has no effect; bug? */
+        /* See https://github.com/shoelace-style/webawesome/issues/1317 */
+        font-size: 5rem;
+      }
+      #nfl-tree wa-tree-item::part(expand-button) {
+        /* Disable the expand/collapse animation
+           so minus signs don't look like vertical lines. */
+        rotate: none;
       }
     </style>
 
-    <!-- This is an autoloader for Web Awesome that watches the DOM
-         for unregistered Web Awesome elements and lazily loads them.  -->
+    <!-- This loads the Web Awesome autoloader which watches DOM modifications
+         for unregistered Web Awesome custom elements and lazy loads them. -->
     <script
       type="module"
       src="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/webawesome.loader.js"
     ></script>
+
+    <script>
+      window.onload = async () => {
+        const dialog = document.getElementById("my-dialog");
+        let openButton = dialog.nextElementSibling;
+        openButton.addEventListener("click", () => (dialog.open = true));
+
+        const crumbs = document.querySelectorAll("wa-breadcrumb-item");
+        for (const crumb of crumbs) {
+          crumb.addEventListener("click", () =>
+            alert(`You clicked the ${crumb.id}.`)
+          );
+        }
+
+        const formatDates = document.querySelectorAll("wa-format-date");
+        const now = new Date();
+        for (const formatDate of formatDates) {
+          formatDate.setAttribute("date", now);
+        }
+
+        document.body.addEventListener("wa-error", (event) => {
+          console.log("got wa-error event from", event.target.localName);
+        });
+
+        /*
+        document.body.addEventListener("wa-load", (event) => {
+          console.log('got wa-load event from', event.target.localName);
+        });
+        */
+
+        const progressBar = document.getElementById("my-progress-bar");
+        const progressRing = document.getElementById("my-progress-ring");
+        const percent = 65;
+        progressBar.setAttribute("value", percent);
+        progressRing.setAttribute("value", percent);
+        // Insufficient space to show text for less than 10%.
+        if (percent >= 10) progressBar.textContent = percent + "%";
+        progressRing.textContent = percent + "%";
+
+        // This causes the wa-rating component to use hearts instead of stars.
+        const rating = document.getElementById("my-rating");
+        const value = 7.5;
+        rating.setAttribute("value", value);
+        rating.getSymbol = () =>
+          '<wa-icon name="heart" variant="solid"></wa-icon>';
+
+        function displayRating(value) {
+          const span = rating.nextElementSibling;
+          span.textContent = value;
+        }
+        displayRating(value);
+        rating.addEventListener("change", () => displayRating(rating.value));
+
+        // This begins with "this minute",
+        // then updates to "1 minute ago", and so on.
+        const timeSynced = document.getElementById("time-synced");
+        timeSynced.date = now;
+
+        const timeYesterday = document.getElementById("time-yesterday");
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        timeYesterday.date = yesterday;
+
+        const timeTomorrow = document.getElementById("time-tomorrow");
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        timeTomorrow.date = tomorrow;
+
+        // Set initial selections in a wa-select with multiple selection.
+        const selectComm = document.getElementById(
+          "select-communication-preferences"
+        );
+        selectComm.value = ["chat", "email"];
+
+        const temperatureSlider = document.getElementById("temperature-slider");
+        temperatureSlider.valueFormatter = (value) => value + "°F";
+        const minTemp = 40;
+        const maxTemp = 70;
+        temperatureSlider.setAttribute("min-value", minTemp);
+        temperatureSlider.setAttribute("max-value", maxTemp);
+
+        const temperatureSpan = temperatureSlider.nextElementSibling;
+        function updateTemperatureText(min, max) {
+          temperatureSpan.textContent = `You prefer ${min}°F to ${max}°F.`;
+        }
+        temperatureSlider.addEventListener("input", () => {
+          const { maxValue, minValue } = temperatureSlider;
+          updateTemperatureText(minValue, maxValue);
+        });
+        updateTemperatureText(minTemp, maxTemp);
+
+        const mySwitch = document.getElementById("my-switch");
+        switchSpan = mySwitch.nextElementSibling;
+        mySwitch.checked = true;
+        function updateHappyText(happy) {
+          switchSpan.textContent = happy ? "😊" : "😞";
+        }
+        updateHappyText(mySwitch.checked);
+        mySwitch.addEventListener("change", () => {
+          updateHappyText(mySwitch.checked);
+        });
+
+        const tabSideGroup = document.getElementById("tab-side-group");
+        const initialSide = "top";
+        tabSideGroup.value = initialSide;
+        const myTabGroup = document.getElementById("my-tab-group");
+        function updateTabSide(side) {
+          myTabGroup.placement = side;
+        }
+        myTabGroup.active = "spring";
+        updateTabSide(initialSide);
+        tabSideGroup.addEventListener("change", () => {
+          updateTabSide(tabSideGroup.value);
+        });
+
+        const nflTree = document.getElementById("nfl-tree");
+        nflTree.addEventListener("wa-selection-change", (event) => {
+          for (const item of event.detail.selection) {
+            console.log(`You selected the ${item.innerText}.`);
+          }
+        });
+      };
+    </script>
   </head>
   <body>
-    <fieldset>
-      <legend>Web Awesome Demos</legend>
+    <h1>Hello, Web Awesome!</h1>
 
-      <div>
-        <wa-avatar label="User avatar"></wa-avatar>
-        <wa-animation name="flip" duration="2000" play>
-          <wa-avatar
-            image="./images/mark-volkmann.png"
-            label="Mark Volkmann"
-            loading="lazy"
-          ></wa-avatar>
-        </wa-animation>
-      </div>
+    <wa-animated-image
+      alt="dancing banana"
+      src="images/dancing-banana.gif"
+      style="width: 150px"
+    ></wa-animated-image>
 
-      <div>
-        <wa-button style="margin-inline-start: 1rem">
-          Errors
-          <wa-badge variant="danger" pill>6</wa-badge>
+    <wa-avatar label="User avatar"></wa-avatar>
+
+    <wa-animation name="flip" duration="2000" play>
+      <wa-avatar
+        image="./images/mark-volkmann.png"
+        label="Mark Volkmann"
+        loading="lazy"
+      ></wa-avatar>
+    </wa-animation>
+
+    <wa-breadcrumb>
+      <wa-breadcrumb-item id="top-crumb">Sport</wa-breadcrumb-item>
+      <wa-breadcrumb-item id="sport-crumb">NFL</wa-breadcrumb-item>
+      <wa-breadcrumb-item id="conference-crumb">AFC</wa-breadcrumb-item>
+      <wa-breadcrumb-item id="division-crumb">West</wa-breadcrumb-item>
+      <wa-breadcrumb-item>Kansas City Chiefs</wa-breadcrumb-item>
+    </wa-breadcrumb>
+
+    <div>
+      <wa-button appearance="filled outlined" variant="danger">
+        Errors
+        <wa-badge attention="pulse" variant="danger" pill>3</wa-badge>
+      </wa-button>
+    </div>
+
+    <wa-button-group label="Alignment">
+      <wa-button size="medium" pill variant="brand">Left</wa-button>
+      <wa-button size="medium" pill variant="success">Center</wa-button>
+      <wa-button size="medium" pill variant="warning">Right</wa-button>
+    </wa-button-group>
+
+    <wa-callout variant="danger">
+      <wa-icon slot="icon" name="circle-exclamation" variant="solid"></wa-icon>
+      <strong>Your account has been deleted</strong><br />
+      We're very sorry to see you go!
+    </wa-callout>
+
+    <wa-card class="card-header">
+      <div slot="header" class="wa-split">Header Content</div>
+      This is the main content.
+      <div slot="footer" class="wa-split">Footer Content</div>
+    </wa-card>
+
+    <!-- <wa-carousel autoplay loop mouse-dragging navigation pagination> -->
+    <wa-carousel loop mouse-dragging navigation pagination>
+      <wa-carousel-item>
+        <img alt="Acadia National Park" src="images/parks/acadia.jpg" />
+      </wa-carousel-item>
+      <wa-carousel-item>
+        <img alt="Badlands National Park" src="images/parks/badlands.jpg" />
+      </wa-carousel-item>
+      <wa-carousel-item>
+        <img
+          alt="Grand Canyon National Park"
+          src="images/parks/grandcanyon.jpg"
+        />
+      </wa-carousel-item>
+      <wa-carousel-item>
+        <img
+          alt="Yellowstone National Park"
+          src="images/parks/oldfaithful.jpg"
+        />
+      </wa-carousel-item>
+      <wa-carousel-item>
+        <img
+          alt="White Sands National Park"
+          src="images/parks/whitesands.jpg"
+        />
+      </wa-carousel-item>
+    </wa-carousel>
+
+    <wa-checkbox size="small">Small</wa-checkbox>
+    <wa-checkbox size="medium">Medium</wa-checkbox>
+    <wa-checkbox size="large">Large</wa-checkbox>
+
+    <wa-color-picker
+      label="Select a color"
+      opacity
+      swatches="red; orange; yellow; green; blue; purple; gray; black"
+      value="#f5a623ff"
+    ></wa-color-picker>
+
+    <!-- Skipped wa-comparison. -->
+
+    <wa-textarea
+      id="life-story"
+      placeholder="Tell me your life story."
+    ></wa-textarea>
+    <!-- Click this icon to copy textarea value to the clipboard. -->
+    <wa-copy-button from="life-story.value"></wa-copy-button>
+
+    <!-- Only one details element with the same name can be open at a time,
+         like an accordion. -->
+    <wa-details name="my-details" summary="Beverly Hillbillies Theme Song">
+      <p>
+        Come and listen to a story about a man named Jed A poor mountaineer,
+        barely kept his family fed, Then one day he was shootin at some food And
+        up through the ground came a bubblin crude.
+      </p>
+      <p>Oil that is, black gold, Texas tea.</p>
+    </wa-details>
+    <wa-details name="my-details" summary="Computer Haiku">
+      Out of memory.<br />
+      We wish to hold the whole sky,<br />
+      But we never will.
+    </wa-details>
+
+    <div>
+      <wa-dialog id="my-dialog" label="Error Message" light-dismiss>
+        Out of memory.<br />
+        We wish to hold the whole sky,<br />
+        But we never will.
+        <wa-button data-dialog="close" slot="footer" variant="brand">
+          Close
         </wa-button>
+      </wa-dialog>
+      <wa-button>Open Dialog</wa-button>
+    </div>
+
+    <wa-divider id="my-divider"></wa-divider>
+
+    <div>
+      <wa-drawer id="my-drawer" label="My Drawer" placement="bottom">
+        Out of memory.<br />
+        We wish to hold the whole sky,<br />
+        But we never will.
+        <wa-button data-drawer="close" slot="footer" variant="brand">
+          Close
+        </wa-button>
+      </wa-drawer>
+      <wa-button data-drawer="open my-drawer">Open Drawer</wa-button>
+    </div>
+
+    <div>
+      <wa-dropdown>
+        <wa-button slot="trigger" with-caret>My Dropdown</wa-button>
+
+        <wa-dropdown-item>
+          <wa-icon slot="icon" name="scissors"></wa-icon>
+          Cut
+        </wa-dropdown-item>
+        <wa-dropdown-item>
+          <wa-icon slot="icon" name="copy"></wa-icon>
+          Copy
+        </wa-dropdown-item>
+        <wa-dropdown-item>
+          <wa-icon slot="icon" name="paste"></wa-icon>
+          Paste
+        </wa-dropdown-item>
+        <wa-divider></wa-divider>
+        <wa-dropdown-item>
+          Show Images
+          <!-- prettier-ignore -->
+          <wa-dropdown-item slot="submenu" value="show-all-images">
+            Show All Images
+          </wa-dropdown-item>
+          <wa-dropdown-item slot="submenu" value="show-thumbnails">
+            Show Thumbnails
+          </wa-dropdown-item>
+        </wa-dropdown-item>
+        <wa-divider></wa-divider>
+        <wa-dropdown-item type="checkbox" checked>
+          Emoji Shortcuts
+        </wa-dropdown-item>
+        <wa-dropdown-item type="checkbox" checked>Word Wrap</wa-dropdown-item>
+        <wa-divider></wa-divider>
+        <wa-dropdown-item variant="danger">
+          <wa-icon slot="icon" name="trash"></wa-icon>
+          Delete
+        </wa-dropdown-item>
+      </wa-dropdown>
+    </div>
+
+    <div>
+      The file is <wa-format-bytes value="123456789"></wa-format-bytes> in size.
+    </div>
+
+    <!-- Date/time formatting options are based on
+         the Intl.DateTimeFormat API. -->
+    <div>
+      Current date:
+      <wa-format-date
+        month="long"
+        day="numeric"
+        year="numeric"
+      ></wa-format-date>
+    </div>
+    <div>
+      Current time:
+      <wa-format-date
+        hour="numeric"
+        minute="numeric"
+        hour-format="12"
+      ></wa-format-date>
+    </div>
+
+    <wa-format-number value="123456789"></wa-format-number>
+    <wa-format-number
+      type="currency"
+      currency="USD"
+      value="1234567.89"
+      lang="en-US"
+    ></wa-format-number>
+
+    <!-- wa-icon was used in several examples above. -->
+
+    <wa-include mode="same-origin" src="./include.html"></wa-include>
+
+    <wa-input
+      hint="What would you like people to call you?"
+      label="Nickname"
+      placeholder="type here"
+      size="large"
+      with-clear
+    >
+      <wa-icon name="user" slot="start"></wa-icon>
+    </wa-input>
+    <wa-input label="Favorite Number" type="number">
+      <wa-icon name="hashtag" slot="end"></wa-icon>
+    </wa-input>
+    <wa-input
+      appearance="filled"
+      label="Password"
+      password-toggle
+      pill
+      size="small"
+      type="password"
+    >
+      <wa-icon name="lock" slot="start"></wa-icon>
+    </wa-input>
+
+    <!-- Skipped wa-mutation-observer. -->
+
+    <div>
+      <wa-popover for="my-popover-button" placement="right">
+        <div id="my-popover-content">
+          <p>
+            Some interesting content goes here.<br />
+            This can include any HTML elements.<br />
+            Click the button below or outside the popover to dismiss it.
+          </p>
+          <wa-button data-popover="close" variant="primary">Close</wa-button>
+        </div>
+      </wa-popover>
+      <wa-button id="my-popover-button">Open Popover</wa-button>
+    </div>
+
+    <!-- Skipped wa-popup.  From the docs,
+         "Popup is a low-level utility built specifically for positioning
+         elements.  It should rarely, if ever, occur directly in your HTML."
+    -->
+
+    <!-- The label attribute is used for the aria-label attribute value
+         and isn't visible. -->
+    <wa-progress-bar
+      id="my-progress-bar"
+      label="Download Progress"
+    ></wa-progress-bar>
+
+    <wa-progress-ring id="my-progress-ring"></wa-progress-ring>
+
+    <!-- This generates and renders a QR code for a given URL.
+         The label attribute is used for the aria-label attribute value
+         and isn't visible. -->
+    <wa-qr-code
+      fill="purple"
+      value="https://www.youtube.com/@MarkVolkmann"
+      label="Scan to visit my YouTube channel."
+      size="96"
+    ></wa-qr-code>
+
+    <!-- The default orientation is vertical. -->
+    <wa-radio-group
+      hint="Pick a good one!"
+      label="Select a color"
+      name="favoriteColor"
+      orientation="horizontal"
+      required
+      size="small"
+      value="blue"
+    >
+      <wa-radio value="red">Red</wa-radio>
+      <wa-radio value="green">Green</wa-radio>
+      <wa-radio value="blue">Blue</wa-radio>
+    </wa-radio-group>
+
+    <div class="row">
+      <!-- The label attribute is used for the aria-label attribute value
+         and isn't visible. -->
+      <wa-rating
+        id="my-rating"
+        label="Rating"
+        precision="0.5"
+        max="10"
+        size="large"
+      ></wa-rating>
+      <span></span>
+    </div>
+
+    <!--TODO: Why is there extra space at the end of each wa-relative-time
+              that causes the period to be not next to the text? -->
+    <div>
+      I was born <wa-relative-time date="1961-04-16"></wa-relative-time
+      ><span>.</span>
+    </div>
+    <div>
+      This page was loaded
+      <wa-relative-time id="time-synced" sync></wa-relative-time>.
+    </div>
+    <div>
+      One day in the past was
+      <wa-relative-time id="time-yesterday"></wa-relative-time>.
+    </div>
+    <div>
+      One day in the future will be
+      <wa-relative-time id="time-tomorrow"></wa-relative-time>.
+    </div>
+
+    <!-- Skipped wa-resize-observer. -->
+    <!-- Skipped wa-scroller. -->
+
+    <wa-select
+      hint="Pick a good one!"
+      id="color-select"
+      label="Select a color"
+      pill
+      placeholder="Select one"
+      required
+      with-clear
+    >
+      <wa-icon slot="start" name="palette" variant="solid"></wa-icon>
+      <wa-option value="red">Red</wa-option>
+      <wa-option value="green">Green</wa-option>
+      <wa-option value="blue">Blue</wa-option>
+      <wa-divider></wa-divider>
+      <wa-option value="white">White</wa-option>
+      <wa-option value="black">Black</wa-option>
+    </wa-select>
+
+    <!-- If more than max-options-visible are selected,
+         a "+n" box appears and the rest are hidden.
+         This defaults to 3.
+         If all the selected options don't fit in one row, they wrap. -->
+    <wa-select
+      class="custom-tag"
+      id="select-communication-preferences"
+      max-options-visible="4"
+      multiple
+      placeholder="Select communication preferences"
+      required
+      with-clear
+    >
+      <wa-option value="chat">
+        <wa-icon slot="start" name="headset" variant="solid"></wa-icon>
+        Chat
+      </wa-option>
+      <wa-option value="email">
+        <wa-icon slot="start" name="envelope" variant="solid"></wa-icon>
+        Email
+      </wa-option>
+      <wa-option value="phone">
+        <wa-icon slot="start" name="phone" variant="solid"></wa-icon>
+        Phone
+      </wa-option>
+      <wa-option value="text">
+        <wa-icon slot="start" name="comment-sms" variant="solid"></wa-icon>
+        Text
+      </wa-option>
+    </wa-select>
+
+    <!-- Skipped wa-skeleton. -->
+
+    <wa-slider
+      id="volume-slider"
+      label="Music Volume"
+      hint="Turn it up!"
+      min="0"
+      max="11"
+      value="4"
+      with-markers
+      with-tooltip
+    >
+      <span slot="reference">Mute</span>
+      <span slot="reference">Max</span>
+    </wa-slider>
+
+    <div>
+      <!-- min-value and max-value specify the initial values. -->
+      <wa-slider
+        hint="Select your preferred temperature range."
+        id="temperature-slider"
+        label="Temperatures"
+        max="90"
+        min="10"
+        name="temperatureRange"
+        range
+        step="5"
+        with-markers
+        with-tooltip
+      >
+        <span slot="reference">Cold</span>
+        <span slot="reference">Hot</span>
+      </wa-slider>
+      <span></span>
+    </div>
+
+    <wa-slider
+      id="size-slider"
+      label="Size"
+      min="0"
+      max="50"
+      name="size"
+      orientation="vertical"
+      size="small"
+      value="20"
+    ></wa-slider>
+
+    <wa-spinner></wa-spinner>
+
+    <wa-split-panel id="my-split-text">
+      <wa-icon slot="divider" name="grip-vertical" variant="solid"></wa-icon>
+      <div slot="start">
+        Come and listen to a story about a man named Jed A poor mountaineer,
+        barely kept his family fed, Then one day he was shootin at some food And
+        up through the ground came a bubblin crude.
+        <br />
+        Oil that is, black gold, Texas tea.
       </div>
-
-      <div>
-        <wa-button-group label="Alignment">
-          <wa-button size="medium" pill>Left</wa-button>
-          <wa-button size="medium" pill>Center</wa-button>
-          <wa-button size="medium" pill>Right</wa-button>
-        </wa-button-group>
+      <div slot="end">
+        Out of memory.<br />
+        We wish to hold the whole sky,<br />
+        But we never will.
       </div>
+    </wa-split-panel>
 
-      <div>
-        <wa-icon name="circle-exclamation" style="regular"></wa-icon>
-        <wa-icon name="circle-exclamation" style="solid"></wa-icon>
-        <i class="fa-solid fa-circle-exclamation"></i>
+    <!-- wa-split-panel elements can be nested and can be vertical. -->
+    <wa-split-panel id="my-split-photos">
+      <wa-icon slot="divider" name="grip-vertical" variant="solid"></wa-icon>
+      <div slot="start">
+        <wa-split-panel orientation="vertical">
+          <wa-icon
+            slot="divider"
+            name="grip-horizontal"
+            variant="solid"
+          ></wa-icon>
+          <div slot="start">
+            <img alt="Acadia National Park" src="images/parks/acadia.jpg" />
+          </div>
+          <div slot="end">
+            <img alt="Badlands National Park" src="images/parks/badlands.jpg" />
+          </div>
+        </wa-split-panel>
       </div>
+      <div slot="end">
+        <wa-split-panel orientation="vertical">
+          <wa-icon
+            slot="divider"
+            name="grip-horizontal"
+            variant="solid"
+          ></wa-icon>
+          <div slot="start">
+            <img
+              alt="Grand Canyon National Park"
+              src="images/parks/grandcanyon.jpg"
+            />
+          </div>
+          <div slot="end">
+            <img
+              alt="Yellowstone National Park"
+              src="images/parks/oldfaithful.jpg"
+            />
+          </div>
+        </wa-split-panel>
+      </div>
+    </wa-split-panel>
 
-      <wa-callout variant="danger">
-        <wa-icon
-          slot="icon"
-          name="circle-exclamation"
-          variant="solid"
-        ></wa-icon>
-        <strong>Your account has been deleted</strong><br />
-        We're very sorry to see you go!
-      </wa-callout>
+    <div>
+      <wa-switch id="my-switch" hint="How are you feeling today?" size="large"
+        >Happy</wa-switch
+      >
+      <span></span>
+    </div>
 
-      <wa-card class="card-header" style="width: 20rem">
-        <div slot="header" class="wa-split">Header Content</div>
-        This is the main content.
-        <div slot="footer" class="wa-split">Footer Content</div>
-      </wa-card>
-    </fieldset>
+    <!-- Can navigate between tabs using arrow keys. -->
+    <wa-tab-group id="my-tab-group">
+      <wa-tab panel="winter">Winter</wa-tab>
+      <wa-tab panel="spring">Spring</wa-tab>
+      <wa-tab panel="summer">Summer</wa-tab>
+      <wa-tab panel="fall">Fall</wa-tab>
+
+      <wa-tab-panel name="winter">
+        Go sledding, ice skating, or build a snowman.
+      </wa-tab-panel>
+      <wa-tab-panel name="spring">
+        Go hiking to see wildflowers bloom, visit botanical gardens, or take
+        long walks in the woods.
+      </wa-tab-panel>
+      <wa-tab-panel name="summer">
+        Go swimming, biking, camping, or stargazing.
+      </wa-tab-panel>
+      <wa-tab-panel name="fall">
+        Go apple picking, take scenic drives to see fall foliage, or visit a
+        pumpkin patch.
+      </wa-tab-panel>
+    </wa-tab-group>
+    <wa-radio-group
+      id="tab-side-group"
+      label="Tab Side"
+      orientation="horizontal"
+      size="small"
+      value="top"
+    >
+      <wa-radio value="top">Top</wa-radio>
+      <wa-radio value="bottom">Bottom</wa-radio>
+      <wa-radio value="start">Start</wa-radio>
+      <wa-radio value="end">End</wa-radio>
+    </wa-radio-group>
+
+    <!-- Skipped wa-tag.
+         They look like buttons, but aren't clickable.
+         They are used by wa-select with the multiple attribute. -->
+
+    <wa-textarea
+      appearance="filled"
+      hint="Please tell us why you wish to return the item."
+      id="my-textarea"
+      label="Reason for Return"
+      name="returnReason"
+      placeholder="Enter your reason, however lame."
+      resize="auto"
+      rows="4"
+      size="small"
+    ></wa-textarea>
+
+    <div>
+      <wa-button id="detonate-button" variant="danger">Detonate</wa-button>
+      <wa-tooltip for="detonate-button" placement="top-start">
+        Are you sure you want to do this?
+      </wa-button>
+    </div>
+
+    <section>
+      <h2>NFL</h2>
+      <wa-tree id="nfl-tree" selection="leaf">
+        <wa-icon name="chevron-right" variant="solid" slot="expand-icon"></wa-icon>
+        <wa-icon name="chevron-down" variant="solid" slot="collapse-icon"></wa-icon>
+        <wa-tree-item>
+          AFC
+          <wa-tree-item>
+            East
+            <wa-tree-item>
+              <wa-icon name="football" variant="solid"></wa-icon>
+              Buffalo Bills
+            </wa-tree-item>
+            <wa-tree-item>Miami Dolphins</wa-tree-item>
+            <wa-tree-item>New England Patriots</wa-tree-item>
+            <wa-tree-item>New York Jets</wa-tree-item>
+          </wa-tree-item>
+          <wa-tree-item>
+            North
+            <wa-tree-item>Baltimore Ravens</wa-tree-item>
+            <wa-tree-item>Cincinnati Bengals</wa-tree-item>
+            <wa-tree-item>Cleveland Browns</wa-tree-item>
+            <wa-tree-item>Pittsburgh Steelers</wa-tree-item>
+          </wa-tree-item>
+          <wa-tree-item>
+            South
+            <wa-tree-item>Houston Texans</wa-tree-item>
+            <wa-tree-item>Indianapolis Colts</wa-tree-item>
+            <wa-tree-item>Jacksonville Jaguars</wa-tree-item>
+            <wa-tree-item>Tennessee Titans</wa-tree-item>
+          </wa-tree-item>
+          <wa-tree-item>
+            West
+            <wa-tree-item>Denver Broncos</wa-tree-item>
+            <wa-tree-item>Kansas City Chiefs</wa-tree-item>
+            <wa-tree-item>Las Vegas Raiders</wa-tree-item>
+            <wa-tree-item>Los Angeles Chargers</wa-tree-item>
+            </wa-tree-item>
+          </wa-tree-item>
+          <wa-tree-item>
+            NFC
+            <wa-tree-item>  
+              East
+              <wa-tree-item>Dallas Cowboys</wa-tree-item>
+              <wa-tree-item>New York Giants</wa-tree-item>
+              <wa-tree-item>Philadelphia Eagles</wa-tree-item>          
+              <wa-tree-item>Washington Commanders</wa-tree-item>
+            </wa-tree-item>
+            <wa-tree-item>  
+              North
+              <wa-tree-item>Chicago Bears</wa-tree-item>
+              <wa-tree-item>Detroit Lions</wa-tree-item>
+              <wa-tree-item>Green Bay Packers</wa-tree-item>
+              <wa-tree-item>Minnesota Vikings</wa-tree-item>
+            </wa-tree-item> 
+            <wa-tree-item>  
+              South
+              <wa-tree-item>Atlanta Falcons</wa-tree-item>
+              <wa-tree-item>Carolina Panthers</wa-tree-item>
+              <wa-tree-item>New Orleans Saints</wa-tree-item>
+              <wa-tree-item>Tampa Bay Buccaneers</wa-tree-item>
+            </wa-tree-item>
+            <wa-tree-item>
+              West
+              <wa-tree-item>Arizona Cardinals</wa-tree-item>
+              <wa-tree-item>Los Angeles Rams</wa-tree-item>
+              <wa-tree-item>San Francisco 49ers</wa-tree-item>
+              <wa-tree-item>Seattle Seahawks</wa-tree-item>
+            </wa-tree-item>
+          </wa-tree-item>
+       </wa-tree>
+
+       <!--
+       The src attribute can be a URL or relative file path.
+       The srcdoc attribute can be an HTML string.
+       Zooming is from the point in the content that is
+       currently in the upper-left corner, not from the center.
+       When zoomed in, you can scroll in any direction using a trackpad.
+       How can you scroll horizontally when using a mouse?
+       -->
+       <wa-zoomable-frame
+         src="images/parks/oldfaithful.jpg"
+         zoom="0.2"
+         zoom-levels="10% 20% 30% 40% 50% 60% 70% 80% 90% 100%"
+       ></wa-zoomable-frame>
+    </section>
   </body>
 </html>
