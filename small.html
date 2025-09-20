@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>Web Awesome Demo</title>
+    <!-- Without this, the degree symbol doesn't render correctly. -->
+    <meta charset="UTF-8" />
+
+    <!-- This loads the default Web Awesome styles. -->
+    <link
+      rel="stylesheet"
+      href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/webawesome.css"
+    />
+
+    <!-- This loads the Web Awesome autoloader which watches DOM modifications
+         for unregistered Web Awesome custom elements and lazy loads them. -->
+    <script
+      type="module"
+      src="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/webawesome.loader.js"
+    ></script>
+    <script>
+      window.onload = () => {
+        const button = document.getElementById("add-button");
+        const target = document.getElementById("target");
+        button.addEventListener("click", () => {
+          target.innerHTML = '<wa-icon slot="icon" name="trash"></wa-icon>';
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <wa-button id="add-button">Add Icon</wa-button>
+    <div id="target"></div>
+  </body>
+</html>
