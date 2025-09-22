@@ -12,11 +12,6 @@
     <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.6/dist/styles/themes/shoelace.css">
 
     <style>
-      /*
-      wa-tag[variant="danger"] {
-        background-color: coral;
-      }
-        */
       body {
         display: flex;
         flex-direction: column;
@@ -966,17 +961,19 @@
        ></wa-zoomable-frame>
     </section>
 
-    <div class="wa-cluster wa-align-items-center wa-gap-m" style="border: 1px solid gray; height: 4rem;">
+    <div class="wa-flex wa-align-items-center wa-gap-m" style="border: 1px solid gray; height: 4rem;">
       <wa-tag variant="success" size="small">Success</wa-tag>
       <wa-tag variant="warning" size="medium">Warning</wa-tag>
       <wa-tag variant="danger" size="large">Danger</wa-tag>
     </div>
 
-    <div class="wa-grid wa-gap-m" style="border: 1px solid gray; --min-column-size: 200px;">
-      <wa-tag variant="success" size="small">Success</wa-tag>
-      <wa-tag variant="neutral" size="small">Neutral</wa-tag>
-      <wa-tag variant="warning" size="medium">Warning</wa-tag>
-      <wa-tag variant="danger" size="large">Danger</wa-tag>
+    <div class="wa-grid wa-gap-m" style="grid-template-columns: repeat(2, 1fr)">
+      <wa-tag>One</wa-tag>
+      <wa-tag>Two</wa-tag>
+      <wa-tag class="wa-span-grid">Three</wa-tag>
+      <wa-tag>Four</wa-tag>
+      <wa-tag>Five</wa-tag>
+      <wa-tag>Six</wa-tag>
     </div>
   </body>
 </html>
