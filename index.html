@@ -193,7 +193,7 @@
     <script>
       window.onload = async () => {
         const dialog = document.getElementById("my-dialog");
-        let openButton = dialog.nextElementSibling;
+        const openButton = dialog.nextElementSibling;
         openButton.addEventListener("click", () => (dialog.open = true));
 
         const crumbs = document.querySelectorAll("wa-breadcrumb-item");
@@ -569,7 +569,7 @@
             This can include any HTML elements.<br />
             Click the button below or outside the popover to dismiss it.
           </p>
-          <wa-button data-popover="close" variant="primary">Close</wa-button>
+          <wa-button data-popover="close" variant="neutral">Close</wa-button>
         </div>
       </wa-popover>
       <wa-button id="my-popover-button">Open Popover</wa-button>
