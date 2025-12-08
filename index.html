@@ -1,10 +1,9 @@
-<html class="wa-theme-default wa-palette-default wa-brand-blue">
+<!DOCTYPE html>
+<html lang="en" class="wa-theme-default wa-palette-default wa-brand-blue">
   <head>
     <title>Web Awesome Demo</title>
     <!-- Without this, the degree symbol doesn't render correctly. -->
     <meta charset="UTF-8" />
-
-    <!--link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.6/dist/styles/webawesome.css"-->
 
     <style>
       body {
@@ -183,7 +182,7 @@
       }
     </style>
 
-    <!--script src="https://kit.webawesome.com/40a9c6c7a8d84e6e.js" crossorigin="anonymous"></script-->
+    <!-- <script src="https://kit.webawesome.com/40a9c6c7a8d84e6e.js" crossorigin="anonymous"></script> -->
     <script type="module">
       // Option 1: import all Web Awesome styles
       //import '@awesome.me/webawesome/dist/styles/webawesome.css';
@@ -191,59 +190,22 @@
       // Option 2: import only the default theme
       import '@awesome.me/webawesome/dist/styles/themes/default.css';
 
-      const components = [
-        'animated-image',
-        'animation',
-        'avatar',
-        'breadcrumb',
-        'breadcrumb-item',
-        'button',
-        'button-group',
-        'card',
-        'carousel',
-        'carousel-item',
-        'checkbox',
-        'color-picker',
-        'copy-button',
-        'details',
-        'dialog',
-        'divider',
-        'drawer',
-        'dropdown',
-        'dropdown-item',
-        'format-bytes',
-        'format-date',
-        'format-number',
-        'icon',
-        'include',
-        'input',
-        'option',
-        'popover',
-        'progress-bar',
-        'progress-ring',
-        'radio',
-        'radio-group',
-        'rating',
-        'relative-time',
-        'select',
-        'slider',
-        'split-panel',
-        'switch',
-        'tab',
-        'tab-group',
-        'tag',
-        'textarea',
-        'tooltip',
-        'tree',
-        'tree-item',
-        'zoomable-frame',
-      ];
-      const path = './node_modules/@awesome.me/webawesome/dist/components';
-      for (const component of components) {
+      const components = `
+        animated-image, animation, avatar, breadcrumb, breadcrumb-item,
+        button, button-group, callout, card, carousel, carousel-item, checkbox,
+        color-picker, copy-button, details, dialog, divider, drawer,
+        dropdown, dropdown-item, format-bytes, format-date, format-number,
+        icon, include, input, option, popover, progress-bar, progress-ring,
+        radio, radio-group, rating, relative-time, select, slider,
+        split-panel, switch, tab, tab-group, tag, textarea, tooltip,
+        tree, tree-item, zoomable-frame
+      `;
+      const path = './node_modules/@awesome.me/webawesome/dist-cdn/components';
+      for (const part of components.split(',')) {
+        const component = part.trim();
         await import(`${path}/${component}/${component}.js`);
       }
     </script>
-
 
     <script>
       window.onload = async () => {
@@ -402,7 +364,7 @@
     </wa-breadcrumb>
 
     <div>
-      <wa-button appearance="filled outlined" variant="danger">
+      <wa-button appearance="filled-outlined" variant="danger">
         Errors
         <wa-badge attention="pulse" variant="danger" pill>3</wa-badge>
       </wa-button>
