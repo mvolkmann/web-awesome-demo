@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" class="wa-theme-default wa-palette-default wa-brand-blue">
+<!-- <html lang="en" class="wa-theme-default wa-palette-default wa-brand-blue"> -->
+<html lang="en">
   <head>
     <title>Web Awesome Demo</title>
     <!-- Without this, the degree symbol doesn't render correctly. -->
@@ -203,7 +204,7 @@
       const path = './node_modules/@awesome.me/webawesome/dist-cdn/components';
       for (const part of components.split(',')) {
         const component = part.trim();
-        await import(`${path}/${component}/${component}.js`);
+        await import(/* @vite-ignore */`${path}/${component}/${component}.js`);
       }
     </script>
 
