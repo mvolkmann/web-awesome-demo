@@ -183,13 +183,12 @@
       }
     </style>
 
-    <!-- <script src="https://kit.webawesome.com/40a9c6c7a8d84e6e.js" crossorigin="anonymous"></script> -->
     <script type="module">
       // Option 1: import all Web Awesome styles
-      //import '@awesome.me/webawesome/dist/styles/webawesome.css';
+      //import './web-awesome/styles/webawesome.css';
 
       // Option 2: import only the default theme
-      import '@awesome.me/webawesome/dist/styles/themes/default.css';
+      import './web-awesome/styles/themes/default.css';
 
       const components = `
         animated-image, animation, avatar, breadcrumb, breadcrumb-item,
@@ -201,10 +200,10 @@
         split-panel, switch, tab, tab-group, tag, textarea, tooltip,
         tree, tree-item, zoomable-frame
       `;
-      const path = './node_modules/@awesome.me/webawesome/dist-cdn/components';
+      const path = './web-awesome/components';
       for (const part of components.split(',')) {
         const component = part.trim();
-        await import(/* @vite-ignore */`${path}/${component}/${component}.js`);
+        import(/* @vite-ignore */`${path}/${component}/${component}.js`);
       }
     </script>
 
