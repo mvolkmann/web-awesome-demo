@@ -6,6 +6,6 @@
     "reinstall": "rm -rf node_modules package-lock.json && npm install"
   },
   "dependencies": {
-    "@awesome.me/webawesome": "^3.0.0-beta.4"
+    "@awesome.me/webawesome": "^3.0.0"
   }
 }
