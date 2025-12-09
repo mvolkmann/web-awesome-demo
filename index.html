@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <!-- <html lang="en" class="wa-theme-default wa-palette-default wa-brand-blue"> -->
-<html lang="en">
+<html lang="en" class="wa-theme-default wa-palette-default wa-brand-blue">
+<!-- <html lang="en" class="wa-theme-awesome wa-palette-bright wa-brand-green"> -->
+<!-- <html lang="en" class="wa-theme-shoelace wa-palette-shoelace wa-brand-blue"> -->
   <head>
     <title>Web Awesome Demo</title>
     <!-- Without this, the degree symbol doesn't render correctly. -->
     <meta charset="UTF-8" />
+
+    <link rel="stylesheet" href="./web-awesome/styles/themes/default.css" />
+    <!-- <link rel="stylesheet" href="./web-awesome/styles/themes/awesome.css" /> -->
+    <!-- <link rel="stylesheet" href="./web-awesome/styles/themes/shoelace.css" /> -->
 
     <style>
       body {
@@ -184,12 +190,6 @@
     </style>
 
     <script type="module">
-      // Option 1: import all Web Awesome styles
-      //import './web-awesome/styles/webawesome.css';
-
-      // Option 2: import only the default theme
-      import './web-awesome/styles/themes/default.css';
-
       const components = `
         animated-image, animation, avatar, breadcrumb, breadcrumb-item,
         button, button-group, callout, card, carousel, carousel-item, checkbox,
@@ -205,10 +205,17 @@
         const component = part.trim();
         import(/* @vite-ignore */`${path}/${component}/${component}.js`);
       }
+
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", (event) => {
+          document.documentElement.classList.toggle("wa-dark", event.matches);
+        });
     </script>
 
     <script>
       window.onload = async () => {
+
         const dialog = document.getElementById("my-dialog");
         const openButton = dialog.nextElementSibling;
         openButton.addEventListener("click", () => (dialog.open = true));
