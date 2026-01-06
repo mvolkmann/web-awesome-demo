@@ -207,11 +207,12 @@
         import(/* @vite-ignore */`${path}/${component}/${component}.js`);
       }
 
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", (event) => {
-          document.documentElement.classList.toggle("wa-dark", event.matches);
-        });
+      const {classList} = document.documentElement;
+      const query = window.matchMedia("(prefers-color-scheme: dark)");
+      classList.toggle("wa-dark", query.matches);
+      query.addEventListener("change", (event) => {
+        classList.toggle("wa-dark", event.matches);
+      });
     </script>
 
     <script>
